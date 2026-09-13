@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>デジタルマーケティングの地図</title>
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="DMの地図">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%23ffffff'/%3E%3Cg stroke='%232c3e6b' stroke-width='7' fill='none'%3E%3Cpath d='M52 58 L128 58 M52 90 L128 90 M52 122 L128 122'/%3E%3C/g%3E%3Cg fill='%232c3e6b'%3E%3Ccircle cx='52' cy='58' r='11'/%3E%3Ccircle cx='128' cy='90' r='11'/%3E%3Ccircle cx='52' cy='122' r='11'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#ffffff; --ink:#141414; --sub:#6b6b6b; --line:#e1e2e6;
+  --accent:#2c3e6b; --accent-soft:#eef0f6; --wash:#f8f9fa;
+  --up:#1f6b3f; --down:#8b1a1a;
+  --serif:"Hiragino Mincho ProN","Yu Mincho",serif;
+  --sans:"Hiragino Sans","Hiragino Kaku Gothic ProN",Meiryo,system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.7;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);
+  -webkit-backdrop-filter:saturate(180%) blur(12px);backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + 12px) 16px 0}
+h1{font-family:var(--serif);font-size:19px;letter-spacing:.06em;margin:0 0 2px;font-weight:600}
+.tagline{font-size:10.5px;color:var(--sub);letter-spacing:.14em;margin:0 0 10px}
+nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:0 0 auto;appearance:none;background:none;border:none;font:inherit;font-size:13px;
+  color:var(--sub);padding:8px 12px 10px;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);font-weight:700}
+main{padding:18px 16px calc(env(safe-area-inset-bottom) + 40px);max-width:720px;margin:0 auto}
+section[hidden]{display:none!important}
+.lede{font-size:13px;color:var(--sub);margin:0 0 18px;padding-left:11px;border-left:2px solid var(--accent)}
+h2{font-family:var(--serif);font-size:15px;letter-spacing:.05em;margin:26px 0 4px;
+  padding-bottom:6px;border-bottom:1px solid var(--line)}
+h2:first-of-type{margin-top:2px}
+.h2note{font-size:12px;color:var(--sub);margin:0 0 12px}
+/* layer cards */
+.card{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:9px;background:#fff;
+  border-left:3px solid var(--accent)}
+.card.data{border-left-color:#5b7ba8;background:var(--accent-soft)}
+.card.gov{border-left-color:#8a8a8a;background:var(--wash)}
+.cardtop{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.lnum{flex:0 0 22px;height:22px;border-radius:5px;background:var(--accent);color:#fff;font-size:11px;
+  display:flex;align-items:center;justify-content:center;font-weight:700}
+.card.gov .lnum{background:#8a8a8a}
+.lname{font-family:var(--serif);font-size:16px;font-weight:600;letter-spacing:.03em}
+.llatin{font-size:9.5px;color:var(--sub);letter-spacing:.12em}
+.lrole{font-size:13px;margin:8px 0 0;color:#333}
+.toolbox{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.ttoggle{appearance:none;background:none;border:none;font:inherit;font-size:11.5px;color:var(--accent);
+  padding:2px 0;cursor:pointer;letter-spacing:.03em;font-weight:700}
+.ttoggle::after{content:" \25BE"}
+.toolbox.open .ttoggle::after{content:" \25B4"}
+.tlist{display:none;margin-top:6px}
+.toolbox.open .tlist{display:block}
+.titem{padding:5px 0;border-bottom:1px dotted var(--line)}
+.titem:last-child{border-bottom:none}
+.tn{font-size:12.5px;font-weight:700}
+.td{font-size:12px;color:#444;line-height:1.55}
+.miss{font-size:12px;margin:9px 0 0;padding:8px 10px;background:var(--wash);border-radius:8px;color:#333}
+.miss b{color:var(--accent)}
+.card.data .miss,.card.gov .miss{background:#fff}
+.kpi{font-size:11px;color:var(--sub);margin:7px 0 0;letter-spacing:.02em}
+.kpi b{color:var(--ink);font-weight:600}
+/* steps */
+.step{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.step:last-child{border-bottom:none}
+.num{flex:0 0 26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;
+  display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.step.soft .num{background:#9aa4bb}
+.sbody{flex:1;min-width:0}
+.sname{font-weight:700;font-size:14.5px}
+.sen{font-size:10px;color:var(--sub);letter-spacing:.09em;margin-left:6px;font-weight:400}
+.srole{font-size:13px;color:#333;margin-top:2px}
+.smore{font-size:12.5px;color:#444;margin-top:8px;padding:9px 11px;background:var(--wash);
+  border-radius:8px;display:none;line-height:1.75}
+.step.open .smore{display:block}
+.smore b{color:var(--accent);font-weight:600}
+.tap{font-size:10.5px;color:var(--sub);text-align:right;margin:-6px 0 6px}
+/* aio blocks */
+.blk{border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:10px;background:#fff}
+.blk h3{font-size:13.5px;margin:0 0 7px;letter-spacing:.02em}
+.blk p{font-size:13px;margin:0 0 8px;color:#333}
+.blk p:last-child{margin-bottom:0}
+.blk b{color:var(--accent)}
+.lever{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid var(--line)}
+.lever:last-child{border-bottom:none;padding-bottom:0}
+.lvn{flex:0 0 22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;
+  display:flex;align-items:center;justify-content:center;font-weight:700}
+.lvb{flex:1;min-width:0}
+.lvt{font-weight:700;font-size:13.5px}
+.lvd{font-size:12.5px;color:#333;margin-top:2px;line-height:1.65}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;
+  background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--accent)}
+.warn{border-left:3px solid #b8860b;background:#fdfaf2}
+/* terms */
+.term{border-bottom:1px solid var(--line);padding:10px 0}
+.term:last-child{border-bottom:none}
+.tname2{font-weight:700;font-size:14px}
+.tdef{font-size:13px;color:#333;margin-top:1px}
+/* tables */
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 6px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:400px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+thead th{font-size:11px;color:var(--sub);font-weight:600;border-bottom:1px solid #ccced4}
+tbody tr.total td{font-weight:700;border-top:1px solid #ccced4}
+td.neg{color:var(--down)} td.pos{color:var(--up)}
+.src{font-size:11px;color:var(--sub);margin:8px 0 0;line-height:1.8}
+/* quiz */
+.qmeta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--sub);margin-bottom:8px}
+.bar{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-bottom:20px}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+.qtext{font-family:var(--serif);font-size:17px;line-height:1.65;margin:0 0 16px}
+.opts{display:grid;gap:8px}
+.opt{appearance:none;text-align:left;font:inherit;font-size:14px;background:#fff;border:1px solid var(--line);
+  border-radius:10px;padding:12px 14px;cursor:pointer;color:var(--ink);line-height:1.5}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--up);background:#f0f7f2;color:var(--up);font-weight:700}
+.opt.wrong{border-color:var(--down);background:#faf0f0;color:var(--down)}
+.expl{font-size:13px;color:#333;background:var(--wash);border-radius:10px;padding:12px 14px;margin-top:14px;display:none}
+.expl.show{display:block}
+.btn{appearance:none;font:inherit;font-size:14px;font-weight:700;border:none;border-radius:10px;
+  background:var(--accent);color:#fff;padding:13px 20px;width:100%;margin-top:14px;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.score{text-align:center;padding:24px 0 8px}
+.score .n{font-family:var(--serif);font-size:46px;color:var(--accent);line-height:1}
+.score .l{font-size:13px;color:var(--sub);margin-top:6px}
+.wrongs{font-size:13px;margin-top:18px}
+.wrongs h3{font-size:12px;color:var(--sub);font-weight:600;margin:0 0 6px}
+.wrongs li{margin-bottom:5px}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:24px 16px 40px;line-height:1.9;
+  border-top:1px solid var(--line);margin-top:30px}
+</style>
+</head>
+<body>
+<header>
+  <h1>デジタルマーケティングの地図</h1>
+  <p class="tagline">DIGITAL MARKETING MAP</p>
+  <nav id="nav"></nav>
+</header>
+<main>
+  <section id="p-map"></section>
+  <section id="p-flow" hidden></section>
+  <section id="p-aio" hidden></section>
+  <section id="p-word" hidden></section>
+  <section id="p-num" hidden></section>
+  <section id="p-quiz" hidden></section>
+</main>
+<footer>
+  広告費は電通「2025年 日本の広告費」（2026年3月5日）。<br>
+  ゼロクリック等は Similarweb クリックストリーム（2026年1〜4月・米国）。<br>
+  AI検索の仕様は各社の公式ドキュメント。<br>
+  <span style="opacity:.7">個人の学習用 / 社外資料ではありません</span>
+</footer>
+<script>
+/* ============ DATA ============ */
+const LAYERS=[
+{k:'',n:'需要をつくる',l:'DEMAND',
+ r:'まだ知らない人に届ける層。予算のいちばん大きな塊がここで動く。',
+ t:[['運用型広告','入札とターゲティングを機械が最適化する買い方。日本のネット広告媒体費の88.7%がこれ'],
+    ['ソーシャル広告','SNS系と動画共有系。媒体費の39.5%を占める最大カテゴリ'],
+    ['ビデオ（動画）広告','2025年に1兆275億円、媒体費の31.0%。前年比+21.8%で最も伸びている'],
+    ['リテールメディア','小売が自社の購買データで広告枠を売る事業。棚と広告が一体になる'],
+    ['アフィリエイト（成果報酬型）','媒体費の2.1%。唯一の前年割れ（96.1%）で、構造的に縮んでいる']],
+ m:'<b>よくある誤解：</b>予算を増やせば売上も比例して増える。実際は<b>飽和曲線</b>があり、同じ相手に何度も当たるだけの領域に入ると増分は逓減する。',
+ kpi:'リーチ、フリークエンシー、CPM、そして<b>増分売上</b>'},
+{k:'',n:'見つけられる',l:'DISCOVERY',
+ r:'探している人の前に出る層。SEO の土俵に、生成AIの回答という新しい面が加わった。',
+ t:[['検索連動型広告','運用型広告の38.7%。買う気のある人を刈り取る'],
+    ['SEO','検索結果での自然な露出。指名検索を育てるのが本丸'],
+    ['AIO / GEO','生成AIの回答に引用されること。→ AIOタブに詳しく'],
+    ['ローカル・マップ','店舗を持つブランドの入口。カウンセリング型ほど効く']],
+ m:'<b>よくある誤解：</b>AIO は SEO とは別の新しい技術だ。→ Google は「AI Overviews や AI Mode に出るための<b>追加要件も特別な最適化も不要</b>」と公式に明言している。',
+ kpi:'表示回数、順位、引用率、<b>指名検索数</b>'},
+{k:'',n:'受け止める',l:'DESTINATION',
+ r:'来た人を逃さない層。ここが弱いと、上流に注いだ予算がそのまま漏れる。',
+ t:[['自社EC（D2C）','顧客データが自社に残る唯一の売り場。だから利益率以上に戦略的'],
+    ['ECモール','客はいるが顧客データは残らない。棚を借りている状態に近い'],
+    ['公式アプリ','Push が無料で届く。ただしインストールの壁が高い'],
+    ['商品ページ・LP','レビューとUGCが効く。自社で書いた説明文より他人の言葉'],
+    ['A/Bテスト','変更の効果を測る唯一の方法。ただし途中で覗くと嘘をつく']],
+ m:'<b>よくある誤解：</b>CVR を上げれば売上が増える。→ CVR は<b>分母（誰が来ているか）</b>で動く。広告を絞れば CVR は上がるが売上は減る。単独では読めない指標。',
+ kpi:'CVR、直帰率、カゴ落ち率、<b>客単価</b>'},
+{k:'',n:'つなぎとめる',l:'RETENTION',
+ r:'二度目を買ってもらう層。獲得コストが上がりきった今、利益はここで決まる。',
+ t:[['会員プログラム','買っているのは割引への反応ではなく「識別できる状態」'],
+    ['メール / LINE / アプリPush','到達率も侵襲性もコストも違う3経路。使い分けが設計の本体'],
+    ['MA（マーケティングオートメーション）','条件を決めて配信を自動化する道具。条件を決めるのは人'],
+    ['レコメンド','人気バイアスがかかる。売れているものがさらに売れるだけ、になりやすい']],
+ m:'<b>よくある誤解：</b>配信を増やせば売れる。→ 短期の売上と長期の解約は<b>トレードオフ</b>。今月の数字は配信頻度で作れてしまうので、必ず解約率と並べて見る。',
+ kpi:'リピート率、F2転換率、LTV、<b>解約・休眠率</b>'},
+{k:'data',n:'データ基盤',l:'DATA',
+ r:'バラバラの接点を「同じ1人」に束ねる層。ここが弱いと上の4層が連携しない。',
+ t:[['CDP','顧客データを1か所に束ねる箱。箱であって答えではない'],
+    ['ID解決','同じ人だと判定する仕組み。決定論的（ログイン等）と確率的がある'],
+    ['ファーストパーティデータ','自社が直接取ったデータ。3rdパーティが細る中で価値が上がった'],
+    ['コンバージョンAPI / サーバーサイドタグ','ブラウザ側の制約を迂回して計測を取り戻す仕組み'],
+    ['データクリーンルーム','相手に生データを渡さずに突合できる場所。小売や媒体との連携で使う']],
+ m:'<b>よくある誤解：</b>CDP を入れれば顧客理解が深まる。→ <b>入れるデータと使う先を決めるのが本体</b>で、箱はその後。決めずに導入すると、高価な倉庫だけが残る。',
+ kpi:'名寄せ率、ID到達率、<b>データ鮮度</b>'},
+{k:'data',n:'計測する',l:'MEASUREMENT',
+ r:'効いたのかを判定する層。三つの層があり、答えは一致しない。それで正常。',
+ t:[['MTA（マルチタッチアトリビューション）','誰がどの経路で来たか。粒度は細かいが、記述であって因果ではない'],
+    ['MMM（マーケティングミックスモデリング）','予算をどう配分すべきか。個人データ不要でオフラインも入るが粗い'],
+    ['インクリメンタリティ実験','止めたら減るか。唯一の因果の証拠だが、遅くて高い'],
+    ['媒体の自己申告CV','各媒体が主張する自分の貢献。足すと実績を超えるのは仕様']],
+ m:'<b>よくある誤解：</b>どこかに一つの正しい数字がある。→ 三層は<b>違う問いに答えている</b>。統一しようとせず、実験を物差しにして較正する。',
+ kpi:'<b>増分ROAS</b>、実験の実施本数'},
+{k:'gov',n:'守る',l:'GOVERNANCE',
+ r:'止められないようにする層。事故ると上の6層がまとめて止まる。',
+ t:[['同意管理（CMP）','オプトインを取り、記録する仕組み。取れる同意の量が使えるデータの量'],
+    ['個人情報保護法 / GDPR','越境移転と第三者提供が実務の論点'],
+    ['ブランドセーフティ','どこに広告が出ているか。化粧品は特に効く'],
+    ['アドフラウド対策','人でないトラフィックへの支払いを止める']],
+ m:'<b>よくある誤解：</b>これは法務が見ている話だ。→ <b>同意の設計は取得できるデータの量を決める</b>ので、マーケティングの設計そのもの。後から相談すると手戻りになる。',
+ kpi:'同意率、インシデント件数'}
+];
+
+const CUST=[
+{n:'認知',e:'AWARENESS',r:'そのブランドが存在すると知られる。',
+ m:'ここは<b>刈り取れない</b>。すぐ売上に結びつかないので予算を削られやすいが、削ると半年後の指名検索が落ちる。効果は遅れて出る。'},
+{n:'興味',e:'INTEREST',r:'自分に関係あるかもしれない、と思われる。',
+ m:'化粧品では<b>悩みの言語化</b>がここ。「しみ」「ハリ」という言葉で検索し始めた瞬間が、この段階に入った合図。'},
+{n:'比較',e:'CONSIDERATION',r:'他と並べて選ばれる。',
+ m:'ここで効くのは自社の説明文ではなく<b>他人の言葉</b>。レビュー、@cosme などの口コミ、そして最近は生成AIの回答。'},
+{n:'購入',e:'PURCHASE',r:'買う。ここで初めて識別できる人になる。',
+ m:'モールで買われると<b>顧客データが残らない</b>。売上は立つが次に繋がらない。自社ECの意味はここにある。'},
+{n:'再購入',e:'REPEAT',r:'二度目を買う。利益はここから。',
+ m:'初回から2回目への転換（<b>F2転換</b>）が最大の断崖。ここを1ポイント動かすほうが、新規獲得を増やすより安いことが多い。'},
+{n:'推奨',e:'ADVOCACY',r:'他人に勧める。UGCとして残る。',
+ m:'レビュー1本は「比較」段階の他人に効く。<b>循環している</b>——だからUGCを集める力は、広告費の効率そのものを変える。'}
+];
+
+const DATAFLOW=[
+{n:'接触',e:'TOUCH',r:'サイト・アプリ・店頭・広告で、行動が発生する。',
+ m:'この時点ではまだ「誰か分からない人の行動」。ブラウザ制約でここが取れなくなったのが、この10年の変化。'},
+{n:'識別',e:'IDENTIFY',r:'ログイン・会員カード・メールで、同じ人だと判定する。',
+ m:'<b>ここが全部の分かれ道</b>。識別できなければ、どれだけデータを集めても人単位では使えない。'},
+{n:'統合',e:'UNIFY',r:'バラバラの接点を1人に束ねる（名寄せ）。',
+ m:'EC・店頭・アプリ・免税で別IDになっているのが普通。<b>統合率が実際の到達可能人数</b>を決める。'},
+{n:'活用',e:'ACTIVATE',r:'配信・接客・レコメンドに使う。',
+ m:'貯めたデータの大半は使われないまま古くなる。<b>使う先を決めてから貯める</b>のが原則。'},
+{n:'計測',e:'MEASURE',r:'効いたかを判定する。',
+ m:'ここで三層（MTA / MMM / 実験）に分かれる。→ 地図タブの「計測する」層。'},
+{n:'学習',e:'LEARN',r:'次の配分を変える。',
+ m:'この一周が閉じていない組織が多い。<b>計測で止まると、レポートを作るための計測になる。</b>'}
+];
+
+const TERMS=[
+{n:'運用型広告 / 予約型広告',d:'前者は入札で都度買う（媒体費の88.7%）。後者は枠を予約して買う（9.2%）。いまのデジタル広告はほぼ前者で、だから「運用」という職種が要る。'},
+{n:'CPM / CPC / CPA',d:'千回表示あたり / クリックあたり / 獲得あたりの単価。どれを見るかで最適化の向き先が変わる。CPAだけ見ると、既に買う気の人を刈るほうに寄る。'},
+{n:'ROAS と 増分ROAS',d:'ROAS は広告経由の売上÷広告費。「広告がなくても買った人」も分子に入る。増分ROASは実験で「打たなかった場合」と比べた差分。経営が見るべきは後者。'},
+{n:'ファーストパーティデータ',d:'自社が顧客から直接取ったデータ。3rdパーティが細ったことで、相対的に価値が上がった。ただし「取れる」と「使える」は別で、同意の範囲に縛られる。'},
+{n:'名寄せ',d:'別々のIDが同じ人だと判定して束ねること。統合率が実際に到達できる人数を決めるので、CDP導入の成否はここで測る。'},
+{n:'ゼロクリック',d:'検索したのにどこにもクリックせず終わること。2026年1〜4月の米国で68.0%。検索は「流入元」から「回答装置」に寄った。'},
+{n:'指名検索',d:'ブランド名で直接検索されること。認知施策の効果がいちばん素直に出る指標で、AI検索時代にはさらに重要になる（名前を知らないと聞かれない）。'},
+{n:'UGC',d:'ユーザーが作ったコンテンツ。レビュー・投稿・動画。比較段階でいちばん効き、しかも自社では書けない。集める力が競争力になる。'},
+{n:'F2転換',d:'初回購入者が2回目を買う率。ここが最大の断崖で、1ポイント動かす価値が新規獲得より大きいことが多い。'},
+{n:'コホート',d:'同じ時期に入った顧客のまとまり。全体平均は新規と既存が混ざって意味を失うので、入った月ごとに追って初めて定着が見える。'},
+{n:'ホールドアウト / ジオリフト',d:'一部の顧客や地域にわざと広告を当てず、差を測る実験。機会損失は出るが、因果を証明できるのはこれだけ。'},
+{n:'リテールメディア',d:'小売が自社の購買データを使って広告枠を売る事業。ブランドから見ると「棚の交渉」と「広告の交渉」が一体化するので、力関係が変わる。'}
+];
+
+const AIO=[
+{h:'いま何が起きているか',
+ p:['検索は「流入元」から「回答装置」に寄った。<b>2026年1〜4月の米国で、Google検索の68.0%がどこもクリックせずに終わっている</b>（2024年は60.5%）。答えが検索結果の中で完結するようになったため。',
+    '一方で、<b>AI検索そのものの流量はまだ小さい</b>。同じ期間で AI Mode に到達した検索は0.34%。ChatGPT の回答に出典リンクが付く割合も2026年5月で6.8%（2025年6月は1.6%）。',
+    'つまり <b>「AI経由の流入が増えた」のではなく「検索からの流入が減った」</b>のが今の実態。この二つを混同すると、打ち手を間違える。']},
+{h:'言葉の整理',
+ p:['<b>SEO</b>＝検索結果で上位に出る。<b>AEO</b>＝質問に対する答えとして抜き出される。<b>GEO / AIO</b>＝生成AIの回答に引用される。',
+    '呼び方は業界でまだ揺れていて、<b>中身はかなり重なっている</b>。別々の施策が3つあるわけではない、と思っておくほうが実務に近い。']},
+{h:'3つのレバー',lever:[
+ ['クロールを許すかを決める','これは<b>技術ではなく経営判断</b>。<code>robots.txt</code> で AI クローラーごとに可否を指定できる。OpenAI なら <code>GPTBot</code>（学習用）と <code>OAI-SearchBot</code>（ChatGPT検索用）が別物で、<b>後者を止めると ChatGPT の検索結果に出なくなる</b>。Google は <code>Google-Extended</code> が学習利用の制御、検索側は通常の <code>noindex</code> / <code>nosnippet</code>。学習は拒否したいが検索には出たい、が普通の落とし所。'],
+ ['引用されやすい形にする','Google は「AI Overviews や AI Mode に出るための<b>追加要件も特別な最適化も不要</b>」と公式に明言している。特別な構造化データも新しいファイルも要らない。効くのは結局、<b>質問に対して答えが明確に書いてあるページ</b>。'],
+ ['言及される場所を増やす','生成AIは自社サイトだけを読んでいるわけではない。レビューサイト、比較記事、ニュース、Wikipedia。<b>自社の外で自社がどう書かれているか</b>が、そのまま回答に反映される。ここは広報とレビュー施策の領域で、SEOチームだけでは動かせない。']]},
+{h:'やらなくていいこと',warn:true,
+ p:['<b>llms.txt</b> — サイトの要約を AI 向けに置く提案。Google は「<b>ランキングに影響しない、使っていない</b>」と明言しており、主要なAI検索が使っている確認も取れていない。置くのは自由だが、施策として予算を付ける段階にはない。',
+    '<b>AI向けの別コンテンツを作る</b> — 人向けと AI 向けでページを分けるのは、検索エンジンから見ると昔からのクローキングに近い。<b>やらない。</b>']},
+{h:'計測できない、という問題',
+ p:['AI の回答内で名前が出ても、クリックされなければログに残らない。<b>効果があっても見えない</b>のがこの領域の最大の難しさ。',
+    '代わりに追える指標は3つ。<b>①指名検索数</b>（名前を知られたかの代理指標）、<b>②直接流入・ノーリファラーの増減</b>、<b>③主要な質問を自分でAIに聞いて、引用されているかを定点観測する</b>。',
+    '③は泥臭いが、いまのところこれが一番確実。<b>月1回、10問決めて自分で聞く</b>くらいで足りる。']},
+{h:'化粧品での意味',
+ p:['「40代 しみ 美容液 おすすめ」のような<b>悩み起点の質問は、生成AIがいちばん答えたがる形</b>。ここで名前が出るかどうかは、比較段階の勝負に直結する。',
+    'そして化粧品は<b>レビューの密度が高い</b>業界なので、AIが参照する材料が自社サイトの外に大量にある。つまり自社サイトをいじる効果は相対的に小さく、<b>外での言われ方を動かすほうが効く</b>可能性が高い。',
+    '一方で、薬機法があるので<b>AIが勝手に効能を要約して言い過ぎるリスク</b>がある。ここは監視の対象で、施策の前に見つける仕組みが要る。']}
+];
+
+const AD25=[['インターネット広告費',40459,110.8,'50.2%'],['テレビメディア広告費',17556,99.7,'21.8%'],
+ ['プロモーションメディア広告費',17184,102.0,'21.3%'],['新聞広告費',3136,91.8,'3.9%'],
+ ['ラジオ広告費',1153,99.2,'1.4%'],['雑誌広告費',1135,96.3,'1.4%']];
+const NET25=[['運用型広告',29352,112.5,'88.7%'],['　うちソーシャル広告',13067,118.7,'39.5%'],
+ ['　うちビデオ（動画）',10275,121.8,'31.0%'],['予約型広告',3042,109.1,'9.2%'],
+ ['成果報酬型広告',699,96.1,'2.1%']];
+
+const QUIZ=[
+{q:'2025年、日本の総広告費に占めるインターネット広告費の割合は？',
+ o:['50.2%（初めて過半数を超えた）','約30%','約40%','約70%'],a:0,
+ e:'総広告費8兆623億円のうちインターネットが4兆459億円。動画広告の伸びが主因で、2025年に初めて過半に達した。'},
+{q:'日本のインターネット広告媒体費のうち、運用型広告が占める割合は？',
+ o:['88.7%','約50%','約30%','約99%'],a:0,
+ e:'2兆9,352億円。予約型は9.2%、成果報酬型は2.1%しかない。「デジタル広告＝運用」と言い切ってよい構造になっている。'},
+{q:'2025年に唯一マイナス成長だったネット広告の取引手法は？',
+ o:['成果報酬型（アフィリエイト、前年比96.1%）','運用型','予約型','ソーシャル広告'],a:0,
+ e:'699億円で構成比2.1%。運用型が+12.5%、ソーシャルが+18.7%で伸びる中、ここだけ縮んでいる。'},
+{q:'「ゼロクリック」とは？',
+ o:['検索したのにどこもクリックせずに終わること','広告がクリックされないこと','購入までのクリック数が0であること','クリック課金が発生しないこと'],a:0,
+ e:'2026年1〜4月の米国で68.0%。2024年は60.5%だった。検索が「流入元」から「回答装置」に寄ったということ。'},
+{q:'OpenAI の <code>OAI-SearchBot</code> をブロックすると何が起きる？',
+ o:['ChatGPT の検索結果に自社サイトが出なくなる','学習データに使われなくなる','ChatGPT からのアクセスが全部止まる','広告審査が通らなくなる'],a:0,
+ e:'学習用は GPTBot で別物。「学習は拒否したいが検索には出たい」なら GPTBot だけ止める。混同すると、意図せず露出を捨てることになる。'},
+{q:'AI Overviews に出るために、Google が必要だとしているのは？',
+ o:['特別な最適化は不要。通常のSEOと同じ','専用の構造化データ','llms.txt の設置','AI向けの別ページ'],a:0,
+ e:'Google は「追加要件も特別な最適化も不要」と公式ドキュメントで明言している。使える制御は nosnippet / max-snippet / noindex / Google-Extended。'},
+{q:'llms.txt について、Google の見解は？',
+ o:['ランキングに影響しない。使っていない','必須である','設置するとペナルティになる','AI Overviews の掲載条件である'],a:0,
+ e:'置くのは自由だが、施策として予算を付ける段階にはない。主要AI検索が使っている確認も取れていない。'},
+{q:'MTA・MMM・インクリメンタリティ実験の関係は？',
+ o:['違う問いに答えているので、数字が一致しなくて正常','同じ数字を3通りに計算しているだけ','MTAが最も正確','MMMが唯一の因果証明'],a:0,
+ e:'MTAは「誰がどの経路で来たか」の記述、MMMは「どう配分すべきか」の推定、実験は「止めたら減るか」の因果。統一ではなく較正が正解。'},
+{q:'各媒体の管理画面のコンバージョン数を全部足すと、実績を超えた。どう解釈する？',
+ o:['仕様。各媒体が「自分の貢献」を主張しているので重複する','どこかの媒体が不正をしている','計測タグの実装ミス','実績の集計が間違っている'],a:0,
+ e:'誰の嘘でもない。配分の問題として、実験で真値を取りに行くしかない。媒体を横並びで競わせると、重複を最大化する方向に最適化されてしまう。'},
+{q:'「CVR を上げれば売上が増える」が危ういのはなぜ？',
+ o:['CVRは分母（誰が来ているか）で動くから','CVRは計測できないから','CVRは季節変動するから','CVRは競合に影響されるから'],a:0,
+ e:'広告を絞れば購買意欲の高い人だけが残ってCVRは上がるが、売上は減る。CVRは単独では読めない指標。'},
+{q:'CDP を導入するときに、いちばん先に決めるべきことは？',
+ o:['入れるデータと、使う先','ベンダーの選定','予算規模','導入スケジュール'],a:0,
+ e:'CDPは箱であって答えではない。使う先を決めずに導入すると、高価な倉庫だけが残る。導入の成否は名寄せ率で測る。'},
+{q:'Google の Privacy Sandbox はどうなったか？',
+ o:['主要APIは廃止され、サードパーティCookieは維持された','予定どおりCookieは廃止された','延期されたが計画は継続中','日本だけ適用外になった'],a:0,
+ e:'2025年10月17日に Topics や Protected Audience など主要技術の廃止を発表。採用が広がらなかったため。CHIPS と FedCM は継続。'},
+{q:'F2転換とは？',
+ o:['初回購入者が2回目を買う率','広告費が2倍になること','2つ目の商品を同時に買う率','2年目の継続率'],a:0,
+ e:'顧客の一生でいちばん大きな断崖。ここを1ポイント動かすほうが、新規獲得を増やすより安いことが多い。'},
+{q:'比較段階でいちばん効くのは？',
+ o:['他人の言葉（レビュー・UGC・口コミ）','自社の商品説明文','価格の安さ','広告の出稿量'],a:0,
+ e:'化粧品はとくにレビュー密度が高い業界。しかもそれは生成AIが参照する材料でもあるので、外での言われ方が二重に効く。'},
+{q:'モールで買われると、自社ECと比べて何が起きない？',
+ o:['顧客データが自社に残らない','売上が立たない','在庫が減らない','配送されない'],a:0,
+ e:'棚を借りている状態に近い。売上は立つが次に繋がらないので、自社ECの意味は利益率よりむしろここにある。'},
+{q:'AI検索の効果を測るのが難しい理由は？',
+ o:['回答内で名前が出てもクリックされなければログに残らない','AIが計測を拒否しているから','法律で禁止されているから','データが有料だから'],a:0,
+ e:'代替の追い方は3つ。指名検索数、直接流入の増減、そして主要な質問を自分でAIに聞いて定点観測すること。'},
+{q:'同意管理（CMP）がマーケティングの設計そのものだ、と言えるのはなぜ？',
+ o:['取れる同意の量が、使えるデータの量を決めるから','法務部門の予算だから','広告費に直接影響するから','媒体審査の条件だから'],a:0,
+ e:'後から法務に相談すると手戻りになる。同意の設計は最初に一緒に決めるもの。'},
+{q:'認知施策の予算を削ると、どうなりやすい？',
+ o:['半年後に指名検索が落ちる','翌月の売上が落ちる','CVRが下がる','CPMが上がる'],a:0,
+ e:'効果が遅れて出るので削られやすく、削った影響も遅れて出るので原因が分からなくなる。この時間差が認知予算の最大の難所。'},
+{q:'リテールメディアがブランドにとって厄介なのは？',
+ o:['棚の交渉と広告の交渉が一体化して力関係が変わるから','費用が高いから','計測できないから','法規制が厳しいから'],a:0,
+ e:'小売が自社の購買データで広告枠を売る事業。「広告を出さないと棚がもらえない」構図に近づく。'},
+{q:'「AI経由の流入が増えている」という説明を聞いたとき、何を確認するか',
+ o:['流入が増えたのか、検索流入が減っただけなのか','AIの精度','媒体の単価','競合のシェア'],a:0,
+ e:'2026年時点で AI Mode に到達した検索は0.34%。増えているのはAI経由ではなく、減っているのは検索経由。打ち手がまったく変わる。'}
+];
+
+/* ============ RENDER ============ */
+const $=s=>document.querySelector(s);
+
+function layerCard(L,i){
+  let h='<div class="card '+L.k+'">'+
+    '<div class="cardtop"><span class="lnum">'+(i+1)+'</span>'+
+    '<span class="lname">'+L.n+'</span><span class="llatin">'+L.l+'</span></div>'+
+    '<p class="lrole">'+L.r+'</p>'+
+    '<div class="toolbox" data-tool><button class="ttoggle">この層の道具 '+L.t.length+'</button><div class="tlist">';
+  L.t.forEach(t=>{h+='<div class="titem"><div class="tn">'+t[0]+'</div><div class="td">'+t[1]+'</div></div>'});
+  h+='</div></div><p class="miss">'+L.m+'</p><p class="kpi">この層のKPI：'+L.kpi+'</p></div>';
+  return h;
+}
+function renderMap(){
+  let h='<p class="lede">デジタルマーケティングは7つの層でできている。上の4層が「客の流れ」、下の3層が「それを支える仕組み」。<b>どの層の話をしているのかが分かれば、たいていの会議は追える。</b></p>';
+  h+='<h2>客に向かう4層</h2><p class="h2note">上から順に、遠い人から近い人へ。</p>';
+  h+=LAYERS.slice(0,4).map((L,i)=>layerCard(L,i)).join('');
+  h+='<h2>支える3層</h2><p class="h2note">目立たないが、ここが弱いと上の4層が機能しない。</p>';
+  h+=LAYERS.slice(4).map((L,i)=>layerCard(L,i+4)).join('');
+  $('#p-map').innerHTML=h;
+  $('#p-map').querySelectorAll('[data-tool] .ttoggle').forEach(b=>{
+    b.addEventListener('click',e=>{e.stopPropagation();b.parentElement.classList.toggle('open')});
+  });
+}
+function stepList(arr,soft){
+  return arr.map((s,i)=>'<div class="step'+(soft?' soft':'')+'" data-step>'+
+    '<div class="num">'+(i+1)+'</div><div class="sbody">'+
+    '<div class="sname">'+s.n+'<span class="sen">'+s.e+'</span></div>'+
+    '<div class="srole">'+s.r+'</div>'+
+    (s.m?'<div class="smore">'+s.m+'</div>':'')+
+  '</div></div>').join('');
+}
+function renderFlow(){
+  let h='<p class="lede">層の地図に、二本の流れを重ねると全体が動き出す。<b>客の流れ</b>と<b>データの流れ</b>は別物で、片方だけ設計すると必ずどこかで切れる。</p>';
+  h+='<h2>客の流れ ― 遠い人が近くなるまで</h2><p class="h2note">戻ったり飛ばしたりする。順番どおりには進まない。</p>';
+  h+='<p class="tap">各行をタップすると補足が出ます</p>'+stepList(CUST,false);
+  h+='<h2>データの流れ ― 行動が判断になるまで</h2><p class="h2note">この一周が閉じて初めて「学習する組織」になる。</p>'+stepList(DATAFLOW,true);
+  $('#p-flow').innerHTML=h;
+  $('#p-flow').querySelectorAll('[data-step]').forEach(el=>{
+    el.addEventListener('click',()=>el.classList.toggle('open'));
+  });
+}
+function renderAio(){
+  let h='<p class="lede">AI Optimization（AIO）。生成AIの回答に自社が引用されるようにする話。用語が乱立していて売り込みも多い領域なので、<b>事実だけを置きます。</b></p>';
+  AIO.forEach(b=>{
+    h+='<div class="blk'+(b.warn?' warn':'')+'"><h3>'+b.h+'</h3>';
+    if(b.p)b.p.forEach(p=>h+='<p>'+p+'</p>');
+    if(b.lever){
+      h+='<div>';
+      b.lever.forEach((l,i)=>{
+        h+='<div class="lever"><div class="lvn">'+(i+1)+'</div><div class="lvb">'+
+           '<div class="lvt">'+l[0]+'</div><div class="lvd">'+l[1]+'</div></div></div>';
+      });
+      h+='</div>';
+    }
+    h+='</div>';
+  });
+  h+='<p class="src">出典：Google 検索セントラル「AI features and your website」、OpenAI「Bots」ドキュメント、Similarweb クリックストリーム（2026年1〜4月・米国、SparkToro 集計）、Similarweb AI Search 統計（2026年5月）。</p>';
+  $('#p-aio').innerHTML=h;
+}
+function renderWords(){
+  let h='<p class="lede">会議で意味が取れないと止まる言葉だけを12個。<b>ROAS と増分ROAS</b>、<b>CVR の分母</b>あたりは、知らないと議論が空回りします。</p><h2>最低限の12語</h2><div>';
+  h+=TERMS.map(t=>'<div class="term"><div class="tname2">'+t.n+'</div><div class="tdef">'+t.d+'</div></div>').join('');
+  $('#p-word').innerHTML=h+'</div>';
+}
+function adTable(rows,unit){
+  let h='<div class="tblwrap"><table><thead><tr><th>媒体</th><th>金額</th><th>前年比</th><th>構成比</th></tr></thead><tbody>';
+  rows.forEach(r=>{
+    const cls=r[2]>=100?'pos':'neg';
+    h+='<tr><td>'+r[0]+'</td><td>'+r[1].toLocaleString()+'</td>'+
+       '<td class="'+cls+'">'+r[2].toFixed(1)+'%</td><td>'+r[3]+'</td></tr>';
+  });
+  return h+'</tbody></table></div><p class="src">単位：'+unit+'</p>';
+}
+function renderNum(){
+  let h='<p class="lede">数字は毎年動きますが、<b>構造</b>は当分変わりません。「ネットが過半」「運用型が9割」「動画が3割」——この3つを押さえれば、たいていの議論は位置づけられます。</p>';
+  h+='<h2>2025年 日本の広告費</h2><p class="h2note">総広告費 8兆623億円（前年比 105.1%）。インターネットが初めて過半数（50.2%）に達した年。</p>';
+  h+=adTable(AD25,'億円');
+  h+='<h2>インターネット広告媒体費の中身</h2><p class="h2note">媒体費の総額は3兆3,093億円（前年比 111.8%）。※ソーシャルとビデオは運用型の内訳。</p>';
+  h+=adTable(NET25,'億円');
+  h+='<h2>AI検索まわり</h2>';
+  h+='<div class="tblwrap"><table><thead><tr><th>指標</th><th>値</th><th>時点</th></tr></thead><tbody>'+
+     '<tr><td>クリックせず終わるGoogle検索</td><td>68.0%</td><td>2026年1〜4月</td></tr>'+
+     '<tr><td>同（2024年）</td><td>60.5%</td><td>2024年</td></tr>'+
+     '<tr><td>AI Mode に到達した検索</td><td>0.34%</td><td>2026年1〜4月</td></tr>'+
+     '<tr><td>ChatGPT の回答に出典が付く割合</td><td>6.8%</td><td>2026年5月</td></tr>'+
+     '<tr><td>同（1年前）</td><td>1.6%</td><td>2025年6月</td></tr>'+
+     '</tbody></table></div><p class="src">米国データ。Similarweb クリックストリーム／AI Search 統計。</p>';
+  h+='<h2>読み方のメモ</h2><p class="h2note" style="margin-bottom:0">';
+  h+='・<b>「AI経由が増えた」のではなく「検索経由が減った」</b>。AI Mode の流量はまだ0.34%で、失われたクリックの行き先はAIではなく「どこにも行かない」。<br>';
+  h+='・成果報酬型だけが前年割れ。<b>中間業者を通す買い方が構造的に縮んでいる</b>。<br>';
+  h+='・Privacy Sandbox は2025年10月に主要APIの廃止が発表され、<b>サードパーティCookieは維持</b>された。「クッキーレス」を前提にした計画は前提から見直しが要る。';
+  h+='</p>';
+  $('#p-num').innerHTML=h;
+}
+/* ============ QUIZ ============ */
+let qs=[],qi=0,qscore=0,qwrong=[];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startQuiz(){
+  qs=shuffle(QUIZ).slice(0,10).map(q=>{
+    const correct=q.o[q.a], opts=shuffle(q.o);
+    return {q:q.q,o:opts,a:opts.indexOf(correct),e:q.e};
+  });
+  qi=0;qscore=0;qwrong=[];drawQ();
+}
+function drawQ(){
+  const el=$('#p-quiz');
+  if(qi>=qs.length){
+    let h='<div class="score"><div class="n">'+qscore+' / '+qs.length+'</div><div class="l">'+
+      (qscore>=9?'この領域の会議で困ることはありません':qscore>=6?'骨格は入っています。地図をもう一巡':'まず「地図」と「流れ」を読み直しましょう')+'</div></div>';
+    if(qwrong.length)h+='<div class="wrongs"><h3>間違えたところ</h3><ul>'+qwrong.map(w=>'<li>'+w+'</li>').join('')+'</ul></div>';
+    h+='<button class="btn" id="again">もう一度（10問）</button><button class="btn ghost" id="toMap">地図に戻る</button>';
+    el.innerHTML=h;
+    $('#again').onclick=startQuiz;
+    $('#toMap').onclick=()=>show('map');
+    return;
+  }
+  const q=qs[qi];
+  el.innerHTML='<div class="qmeta"><span>第 '+(qi+1)+' 問 / '+qs.length+'</span><span>正解 '+qscore+'</span></div>'+
+    '<div class="bar"><i style="width:'+(qi/qs.length*100)+'%"></i></div>'+
+    '<p class="qtext">'+q.q+'</p>'+
+    '<div class="opts">'+q.o.map((o,i)=>'<button class="opt" data-i="'+i+'">'+o+'</button>').join('')+'</div>'+
+    '<div class="expl" id="expl">'+q.e+'</div>'+
+    '<button class="btn" id="next" style="display:none">次へ</button>';
+  el.querySelectorAll('.opt').forEach(b=>{
+    b.onclick=()=>{
+      const i=+b.dataset.i, ok=i===q.a;
+      el.querySelectorAll('.opt').forEach((x,xi)=>{
+        x.disabled=true;
+        if(xi===q.a)x.classList.add('right'); else if(xi===i)x.classList.add('wrong');
+      });
+      if(ok)qscore++; else qwrong.push(q.q.replace(/<[^>]+>/g,''));
+      $('#expl').classList.add('show');
+      const n=$('#next');n.style.display='block';
+      n.onclick=()=>{qi++;drawQ();};
+    };
+  });
+}
+/* ============ NAV ============ */
+const TABS=[['map','地図'],['flow','流れ'],['aio','AIO'],['word','用語'],['num','数字'],['quiz','クイズ']];
+function show(k){
+  TABS.forEach(([id])=>{
+    $('#p-'+id).hidden=(id!==k);
+    $('#tab-'+id).setAttribute('aria-selected',id===k?'true':'false');
+  });
+  window.scrollTo(0,0);
+  try{localStorage.setItem('dmm.tab',k)}catch(e){}
+  if(k==='quiz'&&!qs.length)startQuiz();
+}
+$('#nav').innerHTML=TABS.map(([id,t])=>'<button id="tab-'+id+'" role="tab" aria-selected="false">'+t+'</button>').join('');
+TABS.forEach(([id])=>{$('#tab-'+id).onclick=()=>show(id)});
+
+renderMap();renderFlow();renderAio();renderWords();renderNum();
+let start='map';
+try{const s=localStorage.getItem('dmm.tab');if(s&&TABS.some(t=>t[0]===s))start=s}catch(e){}
+show(start);
+</script>
+</body>
+</html>
